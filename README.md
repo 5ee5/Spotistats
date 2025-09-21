@@ -1,4 +1,4 @@
-# StatsFM
+# Spotistats
 
 A simple Python script to fetch your **Spotify top artists and tracks** and save them to JSON files for analysis or backup.
 
