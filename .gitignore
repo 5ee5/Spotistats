@@ -1,0 +1,5 @@
+.env
+.venv/
+.cache
+top_artists.json
+top_tracks.json
