@@ -34,10 +34,10 @@ This project uses the Spotify Web API. To use it, you need your own Spotify cred
 pip install -r requirements.txt
 ```
 
-#### Add your credentials:
+#### Add your credentials into the .env file:
 ```
 SPOTIPY_CLIENT_ID=your_client_id
 SPOTIPY_CLIENT_SECRET=your_client_secret
-SPOTIPY_REDIRECT_URI=http://localhost:8888/callback
+SPOTIPY_REDIRECT_URI=your_redirect_url
 ```
 
