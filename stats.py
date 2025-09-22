@@ -81,16 +81,9 @@ def fetch_all_data(limit=10):
         tracks_df = get_top_tracks(limit=limit, time_range=tr)
         save_json(tracks_df, os.path.join(out_dir, "top_tracks.json"))
 
-        print(f"✅ Saved {tr} data to {out_dir}/")
-
-    # Save recently played
-    recent_dir = os.path.join(base_dir, "recently_played")
-    os.makedirs(recent_dir, exist_ok=True)
-
+    # Save recently played directly in root folder
     recent_df = get_recently_played(limit=50)
-    save_json(recent_df, os.path.join(recent_dir, "recently_played.json"))
-
-    print(f"✅ Saved recently played data to {recent_dir}/")
+    save_json(recent_df, os.path.join(base_dir, "recently_played.json"))
 
 # ----------- RUN -----------
 if __name__ == "__main__":
