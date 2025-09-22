@@ -34,7 +34,7 @@ def save_json_append(df, filename):
         json.dump(existing, f, ensure_ascii=False, indent=2)
 
 # ----------- FETCH TOP ARTISTS -----------
-def get_top_artists(limit=10, time_range='medium_term'):
+def get_top_artists(limit=10, time_range='long_term'):
     results = sp.current_user_top_artists(limit=limit, time_range=time_range)
     df = pd.DataFrame([{
         'name': a['name'],
@@ -45,7 +45,7 @@ def get_top_artists(limit=10, time_range='medium_term'):
     return df
 
 # ----------- FETCH TOP TRACKS -----------
-def get_top_tracks(limit=10, time_range='medium_term'):
+def get_top_tracks(limit=10, time_range='long_term'):
     results = sp.current_user_top_tracks(limit=limit, time_range=time_range)
     df = pd.DataFrame([{
         'name': t['name'],
