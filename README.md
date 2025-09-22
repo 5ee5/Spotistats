@@ -21,7 +21,6 @@ A simple Python script to fetch your **Spotify top artists and tracks** and save
 ```bash
 pip install -r requirements.txt
 ```
----
 
 #### Add you credentials:
 ```
