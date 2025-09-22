@@ -11,7 +11,7 @@ CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
 CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
 REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
 
-SCOPE = "user-top-read"
+SCOPE = "user-top-read user-read-recently-played"
 
 # ----------- AUTHENTICATION -----------
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
@@ -23,40 +23,76 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
     show_dialog=False
 ))
 
-# ----------- HELPER TO SAVE JSON APPENDING NEW ROWS -----------
-def save_json_append(df, filename):
-    existing = []
-    if os.path.exists(filename):
-        with open(filename, "r", encoding="utf-8") as f:
-            existing = json.load(f)
-    existing.extend(df.to_dict(orient="records"))
-    with open(filename, "w", encoding="utf-8") as f:
-        json.dump(existing, f, ensure_ascii=False, indent=2)
+# ----------- SAVE JSON (overwrite) -----------
+def save_json(df, filepath):
+    with open(filepath, "w", encoding="utf-8") as f:
+        json.dump(df.to_dict(orient="records"), f, ensure_ascii=False, indent=2)
 
 # ----------- FETCH TOP ARTISTS -----------
-def get_top_artists(limit=10, time_range='long_term'):
+def get_top_artists(limit=10, time_range="long_term"):
     results = sp.current_user_top_artists(limit=limit, time_range=time_range)
     df = pd.DataFrame([{
-        'name': a['name'],
-        'popularity': a['popularity'],
-        'genres': ', '.join(a['genres'])
-    } for a in results['items']])
-    save_json_append(df, "top_artists.json")
+        "name": a["name"],
+        "popularity": a["popularity"],
+        "genres": ", ".join(a["genres"])
+    } for a in results["items"]])
     return df
 
 # ----------- FETCH TOP TRACKS -----------
-def get_top_tracks(limit=10, time_range='long_term'):
+def get_top_tracks(limit=10, time_range="long_term"):
     results = sp.current_user_top_tracks(limit=limit, time_range=time_range)
     df = pd.DataFrame([{
-        'name': t['name'],
-        'artist': t['artists'][0]['name'],
-        'popularity': t['popularity']
-    } for t in results['items']])
-    save_json_append(df, "top_tracks.json")
+        "name": t["name"],
+        "artist": t["artists"][0]["name"],
+        "popularity": t["popularity"]
+    } for t in results["items"]])
     return df
 
-# ----------- MAIN -----------
+# ----------- FETCH RECENTLY PLAYED -----------
+def get_recently_played(limit=20):
+    results = sp.current_user_recently_played(limit=limit)
+    df = pd.DataFrame([{
+        "played_at": t["played_at"],
+        "name": t["track"]["name"],
+        "artist": t["track"]["artists"][0]["name"],
+        "album": t["track"]["album"]["name"]
+    } for t in results["items"]])
+    return df
+
+# ----------- MAIN FETCHER -----------
+def fetch_all_data(limit=10):
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "spotify_data")
+    os.makedirs(base_dir, exist_ok=True)
+
+    time_ranges = {
+        "short_term": "last_4_weeks",
+        "medium_term": "last_6_months",
+        "long_term": "lifetime"
+    }
+
+    # Save top artists + tracks per time range
+    for tr, folder in time_ranges.items():
+        out_dir = os.path.join(base_dir, folder)
+        os.makedirs(out_dir, exist_ok=True)
+
+        artists_df = get_top_artists(limit=limit, time_range=tr)
+        save_json(artists_df, os.path.join(out_dir, "top_artists.json"))
+
+        tracks_df = get_top_tracks(limit=limit, time_range=tr)
+        save_json(tracks_df, os.path.join(out_dir, "top_tracks.json"))
+
+        print(f"✅ Saved {tr} data to {out_dir}/")
+
+    # Save recently played
+    recent_dir = os.path.join(base_dir, "recently_played")
+    os.makedirs(recent_dir, exist_ok=True)
+
+    recent_df = get_recently_played(limit=50)
+    save_json(recent_df, os.path.join(recent_dir, "recently_played.json"))
+
+    print(f"✅ Saved recently played data to {recent_dir}/")
+
+# ----------- RUN -----------
 if __name__ == "__main__":
-    get_top_artists()
-    get_top_tracks()
+    fetch_all_data(limit=20)
 
