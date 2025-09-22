@@ -61,7 +61,7 @@ def get_recently_played(limit=20):
 
 # ----------- MAIN FETCHER -----------
 def fetch_all_data(limit=10):
-    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "spotify_data")
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     os.makedirs(base_dir, exist_ok=True)
 
     time_ranges = {
