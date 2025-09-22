@@ -7,7 +7,7 @@ A simple Python script to fetch your **Spotify top artists and tracks** and save
 ## Features
 
 - Fetch top artists and tracks in 3 timeframes (4weeks, 6months, lifetime) using Spotify Web API
-- Save results to JSON files (`top_artists.json`, `top_tracks.json`) and saves them into corresponding time frame directory (`last 4 weeks`, `last 6 months`, `lifetime`).
+- Save results to JSON files (`artists.json`, `tracks.json`) and saves them into corresponding time frame directory (`4 weeks`, `6 months`, `lifetime`).
 - Also saves recently played tracks into (`recently_played.json`)
 - Clean JSON output (overwrites on each run, no duplicate entries)
 - Uses `.env` file for credentials to keep them secure
