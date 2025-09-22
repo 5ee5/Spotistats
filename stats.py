@@ -65,8 +65,8 @@ def fetch_all_data(limit=10):
     os.makedirs(base_dir, exist_ok=True)
 
     time_ranges = {
-        "short_term": "last_4_weeks",
-        "medium_term": "last_6_months",
+        "short_term": "4_weeks",
+        "medium_term": "6_months",
         "long_term": "lifetime"
     }
 
@@ -76,10 +76,10 @@ def fetch_all_data(limit=10):
         os.makedirs(out_dir, exist_ok=True)
 
         artists_df = get_top_artists(limit=limit, time_range=tr)
-        save_json(artists_df, os.path.join(out_dir, "top_artists.json"))
+        save_json(artists_df, os.path.join(out_dir, "artists.json"))
 
         tracks_df = get_top_tracks(limit=limit, time_range=tr)
-        save_json(tracks_df, os.path.join(out_dir, "top_tracks.json"))
+        save_json(tracks_df, os.path.join(out_dir, "tracks.json"))
 
     # Save recently played directly in root folder
     recent_df = get_recently_played(limit=50)
