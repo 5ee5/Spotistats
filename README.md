@@ -29,15 +29,19 @@ This project uses the Spotify Web API. To use it, you need your own Spotify cred
 
 
 #### Install dependencies with:
-
 ```bash
 pip install -r requirements.txt
 ```
 
 #### Add your credentials into the .env file:
-```
+```bash
 SPOTIPY_CLIENT_ID=your_client_id
 SPOTIPY_CLIENT_SECRET=your_client_secret
 SPOTIPY_REDIRECT_URI=your_redirect_url
+```
+
+#### Run it with:
+```bash
+python main.py
 ```
 
