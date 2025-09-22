@@ -1,5 +1,5 @@
 .env
 .venv/
+spotify_data/
 .cache
-top_artists.json
-top_tracks.json
+
